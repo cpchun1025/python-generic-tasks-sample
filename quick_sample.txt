@@ -6,6 +6,14 @@ JOIN user u ON (
 )
 WHERE u.dept = 't';
 
+SELECT d.*
+FROM data d
+JOIN user u ON (
+    SOUNDEX(SUBSTRING_INDEX(d.name, ' ', 1)) = SOUNDEX(SUBSTRING_INDEX(u.name, ' ', 1))
+    OR SOUNDEX(SUBSTRING_INDEX(d.name, ' ', -1)) = SOUNDEX(SUBSTRING_INDEX(u.name, ' ', -1))
+)
+WHERE u.dept = 't';
+
 # Use the official Node.js image with the latest version
 FROM node:latest
 
