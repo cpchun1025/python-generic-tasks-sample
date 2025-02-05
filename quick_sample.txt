@@ -1,0 +1,36 @@
+SELECT d.*
+FROM data d
+JOIN user u ON (
+    d.name LIKE CONCAT('%', SUBSTRING_INDEX(u.name, ' ', 1), '%')
+    OR d.name LIKE CONCAT('%', SUBSTRING_INDEX(u.name, ' ', -1), '%')
+)
+WHERE u.dept = 't';
+
+# Use the official Node.js image with the latest version
+FROM node:latest
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the package.json and package-lock.json files to the working directory
+COPY package*.json ./
+
+# Install the dependencies
+# RUN npm install
+
+# Install the Angular CLI globally
+RUN npm install -g @angular/cli
+
+# Copy the entire project to the working directory
+COPY . .
+
+# Build the Angular, React, and Vue projects
+# RUN cd packages/angular && npm run build
+RUN cd packages/react && npm install
+# RUN cd packages/vue && npm run build
+
+# Expose the desired port (e.g., 8080)
+EXPOSE 8080
+
+# Set the command to run when the container starts
+CMD ["npm", "start"]
